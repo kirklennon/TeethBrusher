@@ -12,14 +12,30 @@ struct ContentView: View {
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
+    func calculateUpgradeMultiplier() -> Double {
+        var totalMultiplier: Double = 1.0
+        for upgrade in enabledUpgrades {
+            totalMultiplier = totalMultiplier * upgrade.multiplier
+        }
+        return totalMultiplier
+    }
+    
     func manuallyBrush() {
-        score += 1
+        score += 1 * calculateUpgradeMultiplier()
     }
     
     func calculateScore() {
-        score += hygienists.scorePerTock
-        score += dentists.scorePerTock
+        if enabledUpgrades.isEmpty {
+            score += hygienists.scorePerTock
+            score += dentists.scorePerTock
+        } else {
+            for upgrade in enabledUpgrades {
+                score += hygienists.scorePerTock * upgrade.multiplier
+                score += dentists.scorePerTock * upgrade.multiplier
+            }
+        }
     }
+    
     class Worker {
         let title: String
         var brushRate: Int
@@ -39,8 +55,26 @@ struct ContentView: View {
         }
     }
     
-    let hygienists = Worker(title: "Dental Hygienist", brushRate: 10, cost: 100.0, numberOfWorkers: 0)
-    let dentists = Worker(title: "Dentist", brushRate: 100, cost: 1000.0, numberOfWorkers: 0)
+    let hygienists = Worker(title: "Dental Hygienist", brushRate: 1, cost: 100.0, numberOfWorkers: 0)
+    let dentists = Worker(title: "Dentist", brushRate: 10, cost: 1000.0, numberOfWorkers: 0)
+    
+    
+    class Upgrade {
+        let name: String
+        let multiplier: Double
+        var cost: Double
+        
+        init(name: String, multiplier: Double, cost: Double) {
+            self.name = name
+            self.multiplier = multiplier
+            self.cost = cost
+        }
+    }
+    
+    let fluoride = Upgrade(name: "Fluoride", multiplier: 1.25, cost: 100)
+    let electricToothbrushes = Upgrade(name: "Electric Toothbrushes", multiplier: 1.5, cost: 500)
+    
+    @State var enabledUpgrades: [Upgrade] = []
     
     var body: some View {
         VStack {
@@ -73,12 +107,20 @@ struct ContentView: View {
             .padding(.vertical)
             
             
+            // Upgrades needs functionality to disable buying the same one twice
             VStack {
                 Text("Buy Upgrades:")
                 HStack {
-                    Text("Upgrade 1")
-                    
-                    Text("Upgrade 2")
+                    Button("Enable Fluoride") {
+                        score = score - fluoride.cost
+                        enabledUpgrades.append(fluoride)
+                    }
+                    .disabled(fluoride.cost > score)
+                    Button("Enable Electric Toothbrushes") {
+                        score = score - electricToothbrushes.cost
+                        enabledUpgrades.append(electricToothbrushes)
+                    }
+                    .disabled(electricToothbrushes.cost > score)
                 }
             }
             .padding(.vertical)
