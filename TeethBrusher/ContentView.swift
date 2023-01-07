@@ -8,30 +8,32 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var score: Double = 0.0
+
+    // for some reason I have to declare the upgrades here and in the init for GameSettings, but only the GameSettings init one actually does anything. Still trying to figured out.
+    @StateObject var settings = GameSettings(score: 0.0, unpurchasedUpgrades: [Upgrade(id: "Fluoride", multiplier: 1.25, cost: 10), Upgrade(id: "Electric Toothbrushes", multiplier: 1.5, cost: 50)])
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     func calculateUpgradeMultiplier() -> Double {
         var totalMultiplier: Double = 1.0
-        for upgrade in enabledUpgrades {
+        for upgrade in settings.purchasedUpgrades {
             totalMultiplier = totalMultiplier * upgrade.multiplier
         }
         return totalMultiplier
     }
     
     func manuallyBrush() {
-        score += 1 * calculateUpgradeMultiplier()
+        settings.score += 1 * calculateUpgradeMultiplier()
     }
     
     func calculateScore() {
-        if enabledUpgrades.isEmpty {
-            score += hygienists.scorePerTock
-            score += dentists.scorePerTock
+        if settings.purchasedUpgrades.isEmpty {
+            settings.score += hygienists.scorePerTock
+            settings.score += dentists.scorePerTock
         } else {
-            for upgrade in enabledUpgrades {
-                score += hygienists.scorePerTock * upgrade.multiplier
-                score += dentists.scorePerTock * upgrade.multiplier
+            for upgrade in settings.purchasedUpgrades {
+                settings.score += hygienists.scorePerTock * upgrade.multiplier
+                settings.score += dentists.scorePerTock * upgrade.multiplier
             }
         }
     }
@@ -55,32 +57,17 @@ struct ContentView: View {
         }
     }
     
+    // need to create workers like upgrades
     let hygienists = Worker(title: "Dental Hygienist", brushRate: 1, cost: 100.0, numberOfWorkers: 0)
     let dentists = Worker(title: "Dentist", brushRate: 10, cost: 1000.0, numberOfWorkers: 0)
     
     
-    class Upgrade {
-        let name: String
-        let multiplier: Double
-        var cost: Double
-        
-        init(name: String, multiplier: Double, cost: Double) {
-            self.name = name
-            self.multiplier = multiplier
-            self.cost = cost
-        }
-    }
-    
-    let fluoride = Upgrade(name: "Fluoride", multiplier: 1.25, cost: 100)
-    let electricToothbrushes = Upgrade(name: "Electric Toothbrushes", multiplier: 1.5, cost: 500)
-    
-    @State var enabledUpgrades: [Upgrade] = []
-    
     var body: some View {
+
         VStack {
             VStack {
                 Text("Teeth brushed:")
-                Text("\(Int(score))")
+                Text("\(Int(settings.score))")
                     .onReceive(timer) { _ in
                         calculateScore()
                 }
@@ -88,41 +75,44 @@ struct ContentView: View {
             }
             .padding(.vertical, 50.0)
             
+            
+            // need to replace this manual system with an array and views similar to upgrades, except they stay in one array
             VStack {
                 Text("Workers:")
                 HStack {
                     Button("Hire Dental Hygienist") {
-                        score = score - hygienists.cost
+                        settings.score = settings.score - hygienists.cost
                         hygienists.numberOfWorkers += 1
                     }
-                    .disabled(hygienists.cost > score)
+                    .disabled(hygienists.cost > settings.score)
                     
                     Button("Hire Dentist") {
-                        score = score - dentists.cost
+                        settings.score = settings.score - dentists.cost
                         dentists.numberOfWorkers += 1
                     }
-                    .disabled(dentists.cost > score)
+                    .disabled(dentists.cost > settings.score)
                 }
             }
             .padding(.vertical)
             
-            
-            // Upgrades needs functionality to disable buying the same one twice
+           
+    
             VStack {
                 Text("Buy Upgrades:")
                 HStack {
-                    Button("Enable Fluoride") {
-                        score = score - fluoride.cost
-                        enabledUpgrades.append(fluoride)
+                    ForEach(settings.unpurchasedUpgrades) { upgrade in
+                        PurchaseableUpgradeView(upgrade: upgrade)
                     }
-                    .disabled(fluoride.cost > score)
-                    Button("Enable Electric Toothbrushes") {
-                        score = score - electricToothbrushes.cost
-                        enabledUpgrades.append(electricToothbrushes)
+                }
+                
+                Text("Purchased Upgrades:")
+                HStack {
+                    ForEach(settings.purchasedUpgrades) { upgrade in
+                        Text(upgrade.id)
                     }
-                    .disabled(electricToothbrushes.cost > score)
                 }
             }
+            .environmentObject(settings)
             .padding(.vertical)
             
             

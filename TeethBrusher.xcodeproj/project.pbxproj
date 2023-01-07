@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A38971E2951436700045543 /* Bundle-Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A38971D2951436700045543 /* Bundle-Decodable.swift */; };
+		4A38972029514BC800045543 /* PurchaseableUpgradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A38971F29514BC800045543 /* PurchaseableUpgradeView.swift */; };
+		4A38972229514C6500045543 /* Upgrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A38972129514C6500045543 /* Upgrade.swift */; };
+		4A3897242957792400045543 /* GameSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3897232957792400045543 /* GameSettings.swift */; };
 		4A3F7A86293BB1500000EA53 /* TeethBrusherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3F7A85293BB1500000EA53 /* TeethBrusherApp.swift */; };
 		4A3F7A88293BB1500000EA53 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3F7A87293BB1500000EA53 /* ContentView.swift */; };
 		4A3F7A8A293BB1510000EA53 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A3F7A89293BB1510000EA53 /* Assets.xcassets */; };
@@ -14,6 +18,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4A38971D2951436700045543 /* Bundle-Decodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle-Decodable.swift"; sourceTree = "<group>"; };
+		4A38971F29514BC800045543 /* PurchaseableUpgradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseableUpgradeView.swift; sourceTree = "<group>"; };
+		4A38972129514C6500045543 /* Upgrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Upgrade.swift; sourceTree = "<group>"; };
+		4A3897232957792400045543 /* GameSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSettings.swift; sourceTree = "<group>"; };
 		4A3F7A82293BB1500000EA53 /* TeethBrusher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TeethBrusher.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A3F7A85293BB1500000EA53 /* TeethBrusherApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeethBrusherApp.swift; sourceTree = "<group>"; };
 		4A3F7A87293BB1500000EA53 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -53,6 +61,10 @@
 			children = (
 				4A3F7A85293BB1500000EA53 /* TeethBrusherApp.swift */,
 				4A3F7A87293BB1500000EA53 /* ContentView.swift */,
+				4A3897232957792400045543 /* GameSettings.swift */,
+				4A38972129514C6500045543 /* Upgrade.swift */,
+				4A38971F29514BC800045543 /* PurchaseableUpgradeView.swift */,
+				4A38971D2951436700045543 /* Bundle-Decodable.swift */,
 				4A3F7A89293BB1510000EA53 /* Assets.xcassets */,
 				4A3F7A8B293BB1510000EA53 /* Preview Content */,
 			);
@@ -139,6 +151,10 @@
 			files = (
 				4A3F7A88293BB1500000EA53 /* ContentView.swift in Sources */,
 				4A3F7A86293BB1500000EA53 /* TeethBrusherApp.swift in Sources */,
+				4A3897242957792400045543 /* GameSettings.swift in Sources */,
+				4A38972029514BC800045543 /* PurchaseableUpgradeView.swift in Sources */,
+				4A38971E2951436700045543 /* Bundle-Decodable.swift in Sources */,
+				4A38972229514C6500045543 /* Upgrade.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
